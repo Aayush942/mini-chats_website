@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Whatsapp</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+     <style>
+        .add{
+            background-color:purple;
+            color:white;
+            padding:10px;
+            font-size:20px;
+            border-radius:10px;
+            margin-left:680px;
+            margin-top:-10px;
+            margin-bottom:20px;
+            border:1px solid purple;
+        }
+    
+        h3{
+            font-size:40px;
+            text-align:center;
+        }
+        
+        .btn{
+            display: inline-flex;
+        }
+        .chatting{
+            display:flex;
+            flex-wrap: wrap;
+        }
+        .edit{
+            border-radius:10px;
+            margin:10px;
+            background-color:pink;
+            border:1px solid purple;
+            
+        }
+     </style>
+</head>
+<body>
+    <h3> Your Chats!</h3>
+    <form method="GET" action="/chats/new">
+        <button class="add"> Add New Chat </button>
+    </form>
+    <% for (let chat of chats) { %>
+    <div class="bg-indigo-600 chat">
+        <p> From: <i> <%= chat.from %> </i></p>
+        <div class="msg"> 
+            <p class="chatting"> <%= chat.msg %> </p>
+            <div class="btn">
+            <form method="GET" action="/chats/<%=chat._id%>/edit">
+                <button class="edit"> edit </button>
+            </form>
+            <form method="POST" action="/chats/<%=chat._id%>?_method=DELETE">
+                <button class="edit"> delete </button>
+            </form>
+            </div>
+        </div>
+            <p> Received to: <i> <%= chat.to %> </i></p>
+            <hr>
+        <% if (chat.updated_at) { %>
+        <p><i>(Edited)</i></p>
+        <p><%= chat.updated_at.toString().split(" ")[4] %></p>
+        <p><%= chat.updated_at.toString().split(" ").slice(0, 4).join("-") %></p>
+    <% } else { %>
+        <p><%= chat.created_at.toString().split(" ")[4] %></p>
+        <p><%= chat.created_at.toString().split(" ").slice(0, 4).join("-") %></p>
+    <% } %>
+    </div>
+    <% } %>
+
+</body>
+</html>
